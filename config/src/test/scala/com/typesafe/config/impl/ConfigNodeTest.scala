@@ -32,7 +32,8 @@ class ConfigNodeTest extends TestUtils {
     }
 
     private def topLevelValueReplaceTest(value: AbstractConfigNodeValue, newValue: AbstractConfigNodeValue, key: String = "foo") {
-        val complexNodeChildren = List(nodeOpenBrace,
+        val complexNodeChildren = List(
+            nodeOpenBrace,
             nodeKeyValuePair(configNodeKey(key), value),
             nodeCloseBrace)
         val complexNode = configNodeObject(complexNodeChildren)
@@ -150,7 +151,8 @@ class ConfigNodeTest extends TestUtils {
         topLevelValueReplaceTest(array, configNodeObject(List(nodeOpenBrace, nodeCloseBrace)))
 
         // Ensure objects can be replaced
-        val nestedMap = configNodeObject(List(nodeOpenBrace,
+        val nestedMap = configNodeObject(List(
+            nodeOpenBrace,
             nodeKeyValuePair(configNodeKey("abc"), configNodeSimpleValue(tokenString("a string"))),
             nodeCloseBrace))
         topLevelValueReplaceTest(nestedMap, nodeInt(10))

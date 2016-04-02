@@ -760,9 +760,11 @@ class ConfigTest extends TestUtils {
         assertEquals(asNanos(1), conf.getNanoseconds("durations.second"))
         assertEquals(1000L, conf.getMilliseconds("durations.secondAsNumber"))
         assertEquals(asNanos(1), conf.getNanoseconds("durations.secondAsNumber"))
-        assertEquals(Seq(1000L, 2000L, 3000L, 4000L),
+        assertEquals(
+            Seq(1000L, 2000L, 3000L, 4000L),
             conf.getMillisecondsList("durations.secondsList").asScala)
-        assertEquals(Seq(asNanos(1), asNanos(2), asNanos(3), asNanos(4)),
+        assertEquals(
+            Seq(asNanos(1), asNanos(2), asNanos(3), asNanos(4)),
             conf.getNanosecondsList("durations.secondsList").asScala)
         assertEquals(500L, conf.getMilliseconds("durations.halfSecond"))
 
@@ -771,9 +773,11 @@ class ConfigTest extends TestUtils {
         assertEquals(asNanos(1), conf.getDuration("durations.second").toNanos)
         assertEquals(1000L, conf.getDuration("durations.secondAsNumber").toMillis)
         assertEquals(asNanos(1), conf.getDuration("durations.secondAsNumber").toNanos)
-        assertEquals(Seq(1000L, 2000L, 3000L, 4000L),
+        assertEquals(
+            Seq(1000L, 2000L, 3000L, 4000L),
             conf.getDurationList("durations.secondsList").asScala.map(_.toMillis))
-        assertEquals(Seq(asNanos(1), asNanos(2), asNanos(3), asNanos(4)),
+        assertEquals(
+            Seq(asNanos(1), asNanos(2), asNanos(3), asNanos(4)),
             conf.getDurationList("durations.secondsList").asScala.map(_.toNanos))
         assertEquals(500L, conf.getDuration("durations.halfSecond").toMillis)
 
@@ -784,9 +788,11 @@ class ConfigTest extends TestUtils {
             assertEquals(s2unit(1), conf.getDuration("durations.second", unit))
             assertEquals(ms2unit(1000L), conf.getDuration("durations.secondAsNumber", unit))
             assertEquals(s2unit(1), conf.getDuration("durations.secondAsNumber", unit))
-            assertEquals(Seq(1000L, 2000L, 3000L, 4000L) map ms2unit,
+            assertEquals(
+                Seq(1000L, 2000L, 3000L, 4000L) map ms2unit,
                 conf.getDurationList("durations.secondsList", unit).asScala)
-            assertEquals(Seq(1, 2, 3, 4) map s2unit,
+            assertEquals(
+                Seq(1, 2, 3, 4) map s2unit,
                 conf.getDurationList("durations.secondsList", unit).asScala)
             assertEquals(ms2unit(500L), conf.getDuration("durations.halfSecond", unit))
             assertEquals(ms2unit(1L), conf.getDuration("durations.millis", unit))
@@ -804,14 +810,16 @@ class ConfigTest extends TestUtils {
         // should get size in bytes
         assertEquals(1024 * 1024L, conf.getBytes("memsizes.meg"))
         assertEquals(1024 * 1024L, conf.getBytes("memsizes.megAsNumber"))
-        assertEquals(Seq(1024 * 1024L, 1024 * 1024L, 1024L * 1024L),
+        assertEquals(
+            Seq(1024 * 1024L, 1024 * 1024L, 1024L * 1024L),
             conf.getBytesList("memsizes.megsList").asScala)
         assertEquals(512 * 1024L, conf.getBytes("memsizes.halfMeg"))
 
         // should get size as a ConfigMemorySize
         assertEquals(1024 * 1024L, conf.getMemorySize("memsizes.meg").toBytes)
         assertEquals(1024 * 1024L, conf.getMemorySize("memsizes.megAsNumber").toBytes)
-        assertEquals(Seq(1024 * 1024L, 1024 * 1024L, 1024L * 1024L),
+        assertEquals(
+            Seq(1024 * 1024L, 1024 * 1024L, 1024L * 1024L),
             conf.getMemorySizeList("memsizes.megsList").asScala.map(_.toBytes))
         assertEquals(512 * 1024L, conf.getMemorySize("memsizes.halfMeg").toBytes)
     }
@@ -1041,9 +1049,11 @@ class ConfigTest extends TestUtils {
     @Test
     def test09DelayedMerge() {
         val conf = ConfigFactory.parseResources(classOf[ConfigTest], "/test09.conf")
-        assertEquals(classOf[ConfigDelayedMergeObject].getSimpleName,
+        assertEquals(
+            classOf[ConfigDelayedMergeObject].getSimpleName,
             conf.root.get("a").getClass.getSimpleName)
-        assertEquals(classOf[ConfigDelayedMerge].getSimpleName,
+        assertEquals(
+            classOf[ConfigDelayedMerge].getSimpleName,
             conf.root.get("b").getClass.getSimpleName)
 
         // a.c should work without resolving because no more merging is needed to compute it

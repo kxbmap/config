@@ -12,7 +12,8 @@ class TokenizerTest extends TestUtils {
 
     // FIXME most of this file should be using this method
     private def tokenizerTest(expected: List[Token], s: String) {
-        assertEquals(List(Tokens.START) ++ expected ++ List(Tokens.END),
+        assertEquals(
+            List(Tokens.START) ++ expected ++ List(Tokens.END),
             tokenizeAsList(s))
         assertEquals(s, tokenizeAsString(s))
     }
@@ -163,7 +164,8 @@ class TokenizerTest extends TestUtils {
         assertEquals('4', "\\u0046"(4))
         assertEquals('6', "\\u0046"(5))
 
-        val tests = List[UnescapeTest]((""" "" """, ""),
+        val tests = List[UnescapeTest](
+            (""" "" """, ""),
             (" \"\\u0000\" ", Character.toString(0)), // nul byte
             (""" "\"\\\/\b\f\n\r\t" """, "\"\\/\b\f\n\r\t"),
             (" \"\\u0046\" ", "F"),
@@ -180,7 +182,8 @@ class TokenizerTest extends TestUtils {
 
     @Test
     def tokenizerReturnsProblemOnInvalidStrings(): Unit = {
-        val invalidTests = List(""" "\" """, // nothing after a backslash
+        val invalidTests = List(
+            """ "\" """, // nothing after a backslash
             """ "\q" """, // there is no \q escape sequence
             "\"\\u123\"", // too short
             "\"\\u12\"", // too short
@@ -191,7 +194,7 @@ class TokenizerTest extends TestUtils {
             """\"\""", // file ends with a backslash
             "$", // file ends with a $
             "${" // file ends with a ${
-            )
+        )
 
         for (t <- invalidTests) {
             val tokenized = tokenizeAsList(t)
@@ -244,7 +247,8 @@ class TokenizerTest extends TestUtils {
         implicit def pair2longtest(pair: (String, Long)) = LongTest(pair._1, tokenLong(pair._2))
         implicit def pair2doubletest(pair: (String, Double)) = DoubleTest(pair._1, tokenDouble(pair._2))
 
-        val tests = List[NumberTest](("1", 1),
+        val tests = List[NumberTest](
+            ("1", 1),
             ("1.2", 1.2),
             ("1e6", 1e6),
             ("1e-6", 1e-6),
@@ -274,16 +278,20 @@ class TokenizerTest extends TestUtils {
         tokenizerTest(List(tokenInt(10), tokenCommentDoubleSlash("comment"), tokenLine(1), tokenInt(12)), "10//comment\n12")
         tokenizerTest(List(tokenInt(10), tokenCommentHash("comment"), tokenLine(1), tokenInt(12)), "10#comment\n12")
         // be sure we handle multi-line comments
-        tokenizerTest(List(tokenCommentDoubleSlash("comment"), tokenLine(1), tokenCommentDoubleSlash("comment2")),
+        tokenizerTest(
+            List(tokenCommentDoubleSlash("comment"), tokenLine(1), tokenCommentDoubleSlash("comment2")),
             "//comment\n//comment2")
-        tokenizerTest(List(tokenCommentHash("comment"), tokenLine(1), tokenCommentHash("comment2")),
+        tokenizerTest(
+            List(tokenCommentHash("comment"), tokenLine(1), tokenCommentHash("comment2")),
             "#comment\n#comment2")
-        tokenizerTest(List(tokenWhitespace("        "), tokenCommentDoubleSlash("comment\r"),
+        tokenizerTest(
+            List(tokenWhitespace("        "), tokenCommentDoubleSlash("comment\r"),
             tokenLine(1), tokenWhitespace("        "), tokenCommentDoubleSlash("comment2        "),
             tokenLine(2), tokenCommentDoubleSlash("comment3        "),
             tokenLine(3), tokenLine(4), tokenCommentDoubleSlash("comment4")),
             "        //comment\r\n        //comment2        \n//comment3        \n\n//comment4")
-        tokenizerTest(List(tokenWhitespace("        "), tokenCommentHash("comment\r"),
+        tokenizerTest(
+            List(tokenWhitespace("        "), tokenCommentHash("comment\r"),
             tokenLine(1), tokenWhitespace("        "), tokenCommentHash("comment2        "),
             tokenLine(2), tokenCommentHash("comment3        "),
             tokenLine(3), tokenLine(4), tokenCommentHash("comment4")),

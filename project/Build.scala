@@ -4,6 +4,7 @@ import com.etsy.sbt.checkstyle.CheckstylePlugin.autoImport._
 import com.typesafe.sbt.osgi.SbtOsgi
 import com.typesafe.sbt.osgi.SbtOsgi.autoImport._
 import com.typesafe.sbt.JavaVersionCheckPlugin.autoImport._
+import com.typesafe.sbt.SbtScalariform
 
 object ConfigBuild extends Build {
     val unpublished = Seq(
@@ -42,7 +43,7 @@ object ConfigBuild extends Build {
 
     lazy val root = Project(id = "root",
                             base = file("."),
-                            settings = rootSettings) aggregate(testLib, configLib,
+                            settings = rootSettings).disablePlugins(SbtScalariform) aggregate(testLib, configLib,
                                                                simpleLibScala, simpleAppScala, complexAppScala,
                                                                simpleLibJava, simpleAppJava, complexAppJava)
 
@@ -57,7 +58,7 @@ object ConfigBuild extends Build {
                                      publishLocal := sys.error("use publishLocalSigned instead of plain publishLocal")
                                    )).enablePlugins(SbtOsgi) dependsOn testLib % "test->test"
 
-    def project(id: String, base: File) = Project(id, base, settings = commonSettings)
+    def project(id: String, base: File) = Project(id, base, settings = commonSettings).disablePlugins(SbtScalariform)
 
     lazy val testLib = project("config-test-lib", file("test-lib"))
 

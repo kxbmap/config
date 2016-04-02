@@ -200,12 +200,14 @@ abstract trait TestUtils {
         }
 
         try {
-            assertEquals("Can no longer deserialize the old format of " + o.getClass.getSimpleName + why,
+            assertEquals(
+                "Can no longer deserialize the old format of " + o.getClass.getSimpleName + why,
                 o, deserialized)
             assertFalse(failure.isDefined) // should have thrown if we had a failure
 
             if (!changedOK)
-                assertEquals(o.getClass.getSimpleName + " serialization has changed (though we still deserialized the old serialization)",
+                assertEquals(
+                    o.getClass.getSimpleName + " serialization has changed (though we still deserialized the old serialization)",
                     expectedHex, hex)
         } catch {
             case e: Throwable =>
@@ -244,7 +246,8 @@ abstract trait TestUtils {
             copyViaSerialize(a)
         } catch {
             case nf: ClassNotFoundException =>
-                throw new AssertionError("failed to make a copy via serialization, " +
+                throw new AssertionError(
+                    "failed to make a copy via serialization, " +
                     "possibly caused by http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6446627",
                     nf)
             case e: Exception =>
@@ -252,7 +255,8 @@ abstract trait TestUtils {
                 throw new AssertionError("failed to make a copy via serialization", e)
         }
 
-        assertTrue("deserialized type " + b.getClass.getSimpleName + " doesn't match serialized type " + a.getClass.getSimpleName,
+        assertTrue(
+            "deserialized type " + b.getClass.getSimpleName + " doesn't match serialized type " + a.getClass.getSimpleName,
             classTag[T].runtimeClass.isAssignableFrom(b.getClass))
 
         b.asInstanceOf[T]
@@ -397,7 +401,8 @@ abstract trait TestUtils {
 
     // We'll automatically try each of these with whitespace modifications
     // so no need to add every possible whitespace variation
-    protected val validJson = List[ParseTest]("{}",
+    protected val validJson = List[ParseTest](
+        "{}",
         "[]",
         """{ "foo" : "bar" }""",
         """["foo", "bar"]""",
@@ -421,7 +426,8 @@ abstract trait TestUtils {
         "{}",
         ParseTest(true, "[ 10e+3 ]")) // "+" in a number (lift doesn't handle)
 
-    private val validConfInvalidJson = List[ParseTest]("", // empty document
+    private val validConfInvalidJson = List[ParseTest](
+        "", // empty document
         " ", // empty document single space
         "\n", // empty document single newline
         " \n \n   \n\n\n", // complicated empty document
@@ -542,20 +548,22 @@ abstract trait TestUtils {
     }
 
     protected def whitespaceVariations(tests: Seq[ParseTest], validInLift: Boolean): Seq[ParseTest] = {
-        val variations = List({ s: String => s }, // identity
+        val variations = List(
+            { s: String => s }, // identity
             { s: String => " " + s },
             { s: String => s + " " },
             { s: String => " " + s + " " },
             { s: String => s.replace(" ", "") }, // this would break with whitespace in a key or value
             { s: String => s.replace(":", " : ") }, // could break with : in a key or value
             { s: String => s.replace(",", " , ") } // could break with , in a key or value
-            )
+        )
         tests flatMap { t =>
             if (t.whitespaceMatters) {
                 Seq(t)
             } else {
                 val withNonAscii = if (t.test.contains(" "))
-                    Seq(ParseTest(validInLift,
+                    Seq(ParseTest(
+                        validInLift,
                         t.test.replace(" ", "\u2003"))) // 2003 = em space, to test non-ascii whitespace
                 else
                     Seq()
@@ -804,7 +812,8 @@ abstract trait TestUtils {
         }
 
         protected def assertMessage(p: ConfigException.ValidationProblem, re: String) {
-            assertTrue("didn't get expected message for " + path + ": got '" + p.problem() + "'",
+            assertTrue(
+                "didn't get expected message for " + path + ": got '" + p.problem() + "'",
                 p.problem().matches(re))
         }
     }
@@ -842,7 +851,8 @@ abstract trait TestUtils {
         for ((problem, expected) <- problems zip expecteds) {
             expected.check(problem)
         }
-        assertEquals("found expected validation problems, got '" + problems + "' and expected '" + expecteds + "'",
+        assertEquals(
+            "found expected validation problems, got '" + problems + "' and expected '" + expecteds + "'",
             expecteds.size, problems.size)
     }
 

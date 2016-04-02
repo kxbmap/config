@@ -101,7 +101,8 @@ class ConfigSubstitutionTest extends TestUtils {
             val s = subst("bar.missing")
             val v = resolveWithoutFallbacks(s, simpleObject)
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             !e.getMessage.contains("cycle"))
     }
 
@@ -952,7 +953,8 @@ class ConfigSubstitutionTest extends TestUtils {
         val resolved = resolve(obj)
         val option1 = parseObject(""" b={c=5}, a={c=5} """).toConfig()
         val option2 = parseObject(""" b=1, a=1 """).toConfig()
-        assertTrue("not an expected possibility: " + resolved +
+        assertTrue(
+            "not an expected possibility: " + resolved +
             " expected 1: " + option1 + " or 2: " + option2,
             resolved == option1 || resolved == option2)
     }
@@ -992,7 +994,8 @@ class ConfigSubstitutionTest extends TestUtils {
                 Right(e)
         }
         val option1 = Left(parseObject("""a:1foo,b:1foo""").toConfig)
-        assertTrue("not an expected possibility: " + either +
+        assertTrue(
+            "not an expected possibility: " + either +
             " expected value " + option1 + " or an exception",
             either == option1 || either.isRight)
     }
@@ -1211,7 +1214,8 @@ class ConfigSubstitutionTest extends TestUtils {
         val e = intercept[ConfigException.UnresolvedSubstitution] {
             resolve(obj)
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("cycle") && e.getMessage.contains("${a}"))
     }
 
@@ -1222,7 +1226,8 @@ class ConfigSubstitutionTest extends TestUtils {
         val e = intercept[ConfigException.UnresolvedSubstitution] {
             resolve(obj)
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("cycle") && e.getMessage.contains("${a}"))
     }
 

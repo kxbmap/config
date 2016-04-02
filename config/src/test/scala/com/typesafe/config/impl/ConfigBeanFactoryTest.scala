@@ -29,7 +29,8 @@ class ConfigBeanFactoryTest extends TestUtils {
     @Test
     def testCreate() {
         val configIs: InputStream = this.getClass().getClassLoader().getResourceAsStream("beanconfig/beanconfig01.conf")
-        val config: Config = ConfigFactory.parseReader(new InputStreamReader(configIs),
+        val config: Config = ConfigFactory.parseReader(
+            new InputStreamReader(configIs),
             ConfigParseOptions.defaults.setSyntax(ConfigSyntax.CONF)).resolve
         val beanConfig: TestBeanConfig = ConfigBeanFactory.create(config, classOf[TestBeanConfig])
         assertNotNull(beanConfig)
@@ -40,13 +41,15 @@ class ConfigBeanFactoryTest extends TestUtils {
     @Test
     def testValidation() {
         val configIs: InputStream = this.getClass().getClassLoader().getResourceAsStream("beanconfig/beanconfig01.conf")
-        val config: Config = ConfigFactory.parseReader(new InputStreamReader(configIs),
+        val config: Config = ConfigFactory.parseReader(
+            new InputStreamReader(configIs),
             ConfigParseOptions.defaults.setSyntax(ConfigSyntax.CONF)).resolve.getConfig("validation")
         val e = intercept[ConfigException.ValidationFailed] {
             ConfigBeanFactory.create(config, classOf[ValidationBeanConfig])
         }
 
-        val expecteds = Seq(Missing("propNotListedInConfig", 77, "string"),
+        val expecteds = Seq(
+            Missing("propNotListedInConfig", 77, "string"),
             WrongType("shouldBeInt", 78, "number", "boolean"),
             WrongType("should-be-boolean", 79, "boolean", "number"),
             WrongType("should-be-list", 80, "list", "string"))
@@ -103,11 +106,15 @@ class ConfigBeanFactoryTest extends TestUtils {
         assertTrue(beanConfig.getOfConfig.get(0).isInstanceOf[Config])
         assertEquals(3, beanConfig.getOfConfigObject.size)
         assertTrue(beanConfig.getOfConfigObject.get(0).isInstanceOf[ConfigObject])
-        assertEquals(List(intValue(1), intValue(2), stringValue("a")),
+        assertEquals(
+            List(intValue(1), intValue(2), stringValue("a")),
             beanConfig.getOfConfigValue.asScala)
-        assertEquals(List(Duration.ofMillis(1), Duration.ofHours(2), Duration.ofDays(3)),
+        assertEquals(
+            List(Duration.ofMillis(1), Duration.ofHours(2), Duration.ofDays(3)),
             beanConfig.getOfDuration.asScala)
-        assertEquals(List(ConfigMemorySize.ofBytes(1024),
+        assertEquals(
+            List(
+            ConfigMemorySize.ofBytes(1024),
             ConfigMemorySize.ofBytes(1048576),
             ConfigMemorySize.ofBytes(1073741824)),
             beanConfig.getOfMemorySize.asScala)
@@ -201,7 +208,8 @@ class ConfigBeanFactoryTest extends TestUtils {
     private def loadConfig(): Config = {
         val configIs: InputStream = this.getClass().getClassLoader().getResourceAsStream("beanconfig/beanconfig01.conf")
         try {
-            val config: Config = ConfigFactory.parseReader(new InputStreamReader(configIs),
+            val config: Config = ConfigFactory.parseReader(
+                new InputStreamReader(configIs),
                 ConfigParseOptions.defaults.setSyntax(ConfigSyntax.CONF)).resolve
             config
         } finally {

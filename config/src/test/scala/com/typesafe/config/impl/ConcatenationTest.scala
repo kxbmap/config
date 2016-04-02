@@ -38,7 +38,8 @@ class ConcatenationTest extends TestUtils {
             parseConfig(""" a : ${x}
                 foo, x = 1 """)
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("not be followed") &&
                 e.getMessage.contains("','"))
     }
@@ -48,7 +49,8 @@ class ConcatenationTest extends TestUtils {
         val e = intercept[ConfigException.WrongType] {
             parseConfig(""" a : abc { x : y } """)
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("Cannot concatenate") &&
                 e.getMessage.contains("abc") &&
                 e.getMessage.contains("""{"x":"y"}"""))
@@ -59,7 +61,8 @@ class ConcatenationTest extends TestUtils {
         val e = intercept[ConfigException.WrongType] {
             parseConfig(""" a : null { x : y } """)
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("Cannot concatenate") &&
                 e.getMessage.contains("null") &&
                 e.getMessage.contains("""{"x":"y"}"""))
@@ -70,7 +73,8 @@ class ConcatenationTest extends TestUtils {
         val e = intercept[ConfigException.WrongType] {
             parseConfig(""" a : abc [1, 2] """)
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("Cannot concatenate") &&
                 e.getMessage.contains("abc") &&
                 e.getMessage.contains("[1,2]"))
@@ -81,7 +85,8 @@ class ConcatenationTest extends TestUtils {
         val e = intercept[ConfigException.WrongType] {
             parseConfig(""" a : abc ${x}, x : { y : z } """).resolve()
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("Cannot concatenate") &&
                 e.getMessage.contains("abc"))
     }
@@ -91,7 +96,8 @@ class ConcatenationTest extends TestUtils {
         val e = intercept[ConfigException.WrongType] {
             parseConfig(""" a : abc ${x}, x : [1,2] """).resolve()
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("Cannot concatenate") &&
                 e.getMessage.contains("abc"))
     }
@@ -120,7 +126,8 @@ class ConcatenationTest extends TestUtils {
             parseConfig(""" a :  [1,2]
                 [3,4]  """)
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("expecting") &&
                 e.getMessage.contains("'['"))
     }
@@ -168,7 +175,8 @@ class ConcatenationTest extends TestUtils {
             parseConfig(""" a :  { b : c }
                     { x : y }""")
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("expecting") &&
                 e.getMessage.contains("'{'"))
     }
@@ -210,7 +218,8 @@ class ConcatenationTest extends TestUtils {
     @Test
     def listConcatInsideArrayValue() {
         val conf = parseConfig(""" a : [ [1, 2] [3, 4] ] """)
-        assertEquals(List(List(1, 2, 3, 4)),
+        assertEquals(
+            List(List(1, 2, 3, 4)),
             // well that's a little silly
             conf.getList("a").unwrapped().asScala.toList.map(_.asInstanceOf[java.util.List[_]].asScala.toList))
     }
@@ -219,7 +228,8 @@ class ConcatenationTest extends TestUtils {
     def listNonConcatInsideArrayValue() {
         val conf = parseConfig(""" a : [ [1, 2]
                 [3, 4] ] """)
-        assertEquals(List(List(1, 2), List(3, 4)),
+        assertEquals(
+            List(List(1, 2), List(3, 4)),
             // well that's a little silly
             conf.getList("a").unwrapped().asScala.toList.map(_.asInstanceOf[java.util.List[_]].asScala.toList))
     }
@@ -269,7 +279,8 @@ class ConcatenationTest extends TestUtils {
         val e = intercept[ConfigException.WrongType] {
             val conf = parseConfig(""" a = 10, a += 2 """).resolve()
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("Cannot concatenate") &&
                 e.getMessage.contains("10") &&
                 e.getMessage.contains("[2]"))
@@ -280,7 +291,8 @@ class ConcatenationTest extends TestUtils {
         val e = intercept[ConfigException.WrongType] {
             parseConfig(""" a = abc, a += 2 """).resolve()
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("Cannot concatenate") &&
                 e.getMessage.contains("abc") &&
                 e.getMessage.contains("[2]"))
@@ -291,7 +303,8 @@ class ConcatenationTest extends TestUtils {
         val e = intercept[ConfigException.WrongType] {
             parseConfig(""" a = { x : y }, a += 2 """).resolve()
         }
-        assertTrue("wrong exception: " + e.getMessage,
+        assertTrue(
+            "wrong exception: " + e.getMessage,
             e.getMessage.contains("Cannot concatenate") &&
                 e.getMessage.contains("\"x\":\"y\"") &&
                 e.getMessage.contains("[2]"))

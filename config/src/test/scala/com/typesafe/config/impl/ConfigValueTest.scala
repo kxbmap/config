@@ -431,14 +431,16 @@ class ConfigValueTest extends TestUtils {
 
     @Test
     def configObjectUnwraps() {
-        val m = new SimpleConfigObject(fakeOrigin(),
+        val m = new SimpleConfigObject(
+            fakeOrigin(),
             configMap("a" -> 1, "b" -> 2, "c" -> 3))
         assertEquals(Map("a" -> 1, "b" -> 2, "c" -> 3), m.unwrapped().asScala)
     }
 
     @Test
     def configObjectImplementsMap() {
-        val m: ConfigObject = new SimpleConfigObject(fakeOrigin(),
+        val m: ConfigObject = new SimpleConfigObject(
+            fakeOrigin(),
             configMap("a" -> 1, "b" -> 2, "c" -> 3))
 
         assertEquals(intValue(1), m.get("a"))
@@ -480,7 +482,8 @@ class ConfigValueTest extends TestUtils {
     @Test
     def configListImplementsList() {
         val scalaSeq = Seq[AbstractConfigValue](stringValue("a"), stringValue("b"), stringValue("c"))
-        val l: ConfigList = new SimpleConfigList(fakeOrigin(),
+        val l: ConfigList = new SimpleConfigList(
+            fakeOrigin(),
             scalaSeq.asJava)
 
         assertEquals(scalaSeq(0), l.get(0))
@@ -567,7 +570,8 @@ class ConfigValueTest extends TestUtils {
 
         // ConfigDelayedMergeObject
         val emptyObj = SimpleConfigObject.empty()
-        val dmo = new ConfigDelayedMergeObject(fakeOrigin(),
+        val dmo = new ConfigDelayedMergeObject(
+            fakeOrigin(),
             List[AbstractConfigValue](emptyObj, subst("a"), subst("b")).asJava)
         assertEquals(ConfigValueType.OBJECT, dmo.valueType())
         unresolved { dmo.unwrapped() }
@@ -594,12 +598,14 @@ class ConfigValueTest extends TestUtils {
         val d = "1e100"
 
         val obj = parseConfig("{ a : " + a + ", b : " + b + ", c : " + c + ", d : " + d + "}")
-        assertEquals(Seq(a, b, c, d),
+        assertEquals(
+            Seq(a, b, c, d),
             Seq("a", "b", "c", "d") map { obj.getString(_) })
 
         // make sure it still works if we're doing concatenation
         val obj2 = parseConfig("{ a : xx " + a + " yy, b : xx " + b + " yy, c : xx " + c + " yy, d : xx " + d + " yy}")
-        assertEquals(Seq(a, b, c, d) map { "xx " + _ + " yy" },
+        assertEquals(
+            Seq(a, b, c, d) map { "xx " + _ + " yy" },
             Seq("a", "b", "c", "d") map { obj2.getString(_) })
     }
 
@@ -916,13 +922,16 @@ class ConfigValueTest extends TestUtils {
             combo =>
                 Seq(
                     // second inside first
-                    new SimpleConfigList(combo._1,
+                    new SimpleConfigList(
+                        combo._1,
                         Seq[AbstractConfigValue](new ConfigInt(combo._2, 42, "42")).asJava),
                     // triple-nested means we have to null then un-null then null, which is a tricky case
                     // in the origin-serialization code.
-                    new SimpleConfigList(combo._1,
-                        Seq[AbstractConfigValue](new SimpleConfigList(combo._2,
-                            Seq[AbstractConfigValue](new ConfigInt(combo._1, 42, "42")).asJava)).asJava))
+                    new SimpleConfigList(
+                        combo._1,
+                        Seq[AbstractConfigValue](new SimpleConfigList(
+                        combo._2,
+                        Seq[AbstractConfigValue](new ConfigInt(combo._1, 42, "42")).asJava)).asJava))
         })
         def top(v: SimpleConfigList) = v.origin
         def middle(v: SimpleConfigList) = v.get(0).origin
@@ -944,7 +953,8 @@ class ConfigValueTest extends TestUtils {
     @Test
     def renderWithNewlinesInDescription(): Unit = {
         val v = ConfigValueFactory.fromAnyRef(89, "this is a description\nwith some\nnewlines")
-        val list = new SimpleConfigList(SimpleConfigOrigin.newSimple("\n5\n6\n7\n"),
+        val list = new SimpleConfigList(
+            SimpleConfigOrigin.newSimple("\n5\n6\n7\n"),
             java.util.Collections.singletonList(v.asInstanceOf[AbstractConfigValue]))
         val conf = ConfigFactory.empty().withValue("bar", list)
         val rendered = conf.root.render()

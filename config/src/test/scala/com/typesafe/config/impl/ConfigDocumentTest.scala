@@ -377,10 +377,12 @@ class ConfigDocumentTest extends TestUtils {
     def configDocumentIndentationMultiLineValue {
         val origText = "a {\n  b {\n    c {\n      d: e\n    }\n  }\n}"
         val configDocument = ConfigDocumentFactory.parseString(origText)
-        assertEquals("a {\n  b {\n    c {\n      d: e\n      f : {\n        g: h\n        i: j\n        k: {\n          l: m\n        }\n      }\n    }\n  }\n}",
+        assertEquals(
+            "a {\n  b {\n    c {\n      d: e\n      f : {\n        g: h\n        i: j\n        k: {\n          l: m\n        }\n      }\n    }\n  }\n}",
             configDocument.withValueText("a.b.c.f", "{\n  g: h\n  i: j\n  k: {\n    l: m\n  }\n}").render())
 
-        assertEquals("a {\n  b {\n    c {\n      d: e\n      f : 12 13 [1,\n      2,\n      3,\n      {\n        a:b\n      }]\n    }\n  }\n}",
+        assertEquals(
+            "a {\n  b {\n    c {\n      d: e\n      f : 12 13 [1,\n      2,\n      3,\n      {\n        a:b\n      }]\n    }\n  }\n}",
             configDocument.withValueText("a.b.c.f", "12 13 [1,\n2,\n3,\n{\n  a:b\n}]").render())
     }
 
@@ -418,7 +420,8 @@ class ConfigDocumentTest extends TestUtils {
         val origText = "a {\n  b {\n    c : 22\n  }\n}"
         val configDocument = ConfigDocumentFactory.parseString(origText)
 
-        assertEquals("a {\n  b {\n    c : 22\n    d : {\n      include \"foo\"\n      e:f\n    }\n  }\n}",
+        assertEquals(
+            "a {\n  b {\n    c : 22\n    d : {\n      include \"foo\"\n      e:f\n    }\n  }\n}",
             configDocument.withValueText("a.b.d", "{\n  include \"foo\"\n  e:f\n}").render())
     }
 
@@ -438,7 +441,8 @@ class ConfigDocumentTest extends TestUtils {
         assertEquals("a : 1", configDocument.withValueText("a", "1").render)
 
         val mapVal = ConfigValueFactory.fromAnyRef(Map("a" -> 1, "b" -> 2).asJava)
-        assertEquals("a : {\n    \"a\" : 1,\n    \"b\" : 2\n}",
+        assertEquals(
+            "a : {\n    \"a\" : 1,\n    \"b\" : 2\n}",
             configDocument.withValue("a", mapVal).render)
 
         val arrayVal = ConfigValueFactory.fromAnyRef(List(1, 2).asJava)
@@ -452,7 +456,8 @@ class ConfigDocumentTest extends TestUtils {
 
         val configVal = ConfigValueFactory.fromAnyRef(Map("a" -> 1, "b" -> 2).asJava)
 
-        assertEquals("{ a : {\n     \"a\" : 1,\n     \"b\" : 2\n } }",
+        assertEquals(
+            "{ a : {\n     \"a\" : 1,\n     \"b\" : 2\n } }",
             configDocument.withValue("a", configVal).render)
     }
 }

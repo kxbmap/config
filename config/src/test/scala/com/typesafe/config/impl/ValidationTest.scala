@@ -44,7 +44,8 @@ class ValidationTest extends TestUtils {
     @Test
     def validationWithRoot() {
         val objectWithB = parseObject("""{ b : c }""")
-        val reference = ConfigFactory.parseFile(resourceFile("validate-reference.conf"),
+        val reference = ConfigFactory.parseFile(
+            resourceFile("validate-reference.conf"),
             ConfigParseOptions.defaults()).withFallback(objectWithB)
         val conf = ConfigFactory.parseFile(resourceFile("validate-invalid.conf"), ConfigParseOptions.defaults())
         val e = intercept[ConfigException.ValidationFailed] {
@@ -67,7 +68,8 @@ class ValidationTest extends TestUtils {
         val e = intercept[ConfigException.NotResolved] {
             conf.checkValid(reference)
         }
-        assertTrue("expected different message, got: " + e.getMessage,
+        assertTrue(
+            "expected different message, got: " + e.getMessage,
             e.getMessage.contains("resolve"))
     }
 
@@ -122,7 +124,8 @@ class ValidationTest extends TestUtils {
         val reference = parseConfig("""{ a : [a,b,c] }""")
         val conf = parseConfig("""{ a : { "0" : x, "1" : y } }""")
         conf.checkValid(reference)
-        assertEquals("got the sequence from overriding list with indexed object",
+        assertEquals(
+            "got the sequence from overriding list with indexed object",
             Seq("x", "y"), conf.getStringList("a").asScala)
     }
 }

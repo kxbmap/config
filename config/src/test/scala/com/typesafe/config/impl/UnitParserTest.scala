@@ -49,11 +49,14 @@ class UnitParserTest extends TestUtils {
         assertEquals("could parse 1d", dayInNanos, result)
 
         val conf = parseConfig("foo = 1d")
-        assertEquals("could get 1d from conf as days",
+        assertEquals(
+            "could get 1d from conf as days",
             1L, conf.getDuration("foo", TimeUnit.DAYS))
-        assertEquals("could get 1d from conf as nanos",
+        assertEquals(
+            "could get 1d from conf as nanos",
             dayInNanos, conf.getNanoseconds("foo"))
-        assertEquals("could get 1d from conf as millis",
+        assertEquals(
+            "could get 1d from conf as millis",
             TimeUnit.DAYS.toMillis(1), conf.getMilliseconds("foo"))
     }
 

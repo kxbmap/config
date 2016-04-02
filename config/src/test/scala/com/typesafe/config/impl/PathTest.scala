@@ -81,7 +81,8 @@ class PathTest extends TestUtils {
     @Test
     def pathFromPathList() {
         assertEquals(path("foo"), new Path(List(path("foo")).asJava))
-        assertEquals(path("foo", "bar", "baz", "boo"), new Path(List(path("foo", "bar"),
+        assertEquals(path("foo", "bar", "baz", "boo"), new Path(List(
+            path("foo", "bar"),
             path("baz", "boo")).asJava))
     }
 
